@@ -1,0 +1,40 @@
+plugins {
+    id 'application'
+}
+
+group = 'fpgata'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+dependencies {
+    implementation 'io.javalin:javalin:6.5.0'
+    implementation 'org.xerial:sqlite-jdbc:3.46.1.3'
+    implementation 'org.slf4j:slf4j-simple:2.0.16'
+
+    testImplementation platform('org.junit:junit-bom:5.11.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+application {
+    mainClass = 'fpgata.app.Main'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    // 测试固定、离线可重复：不依赖开发者机器状态
+    systemProperty 'java.io.tmpdir', project.layout.buildDirectory.dir('tmp-test').get().asFile.absolutePath
+}
+
+tasks.named('run') {
+    standardInput = System.in
+}
