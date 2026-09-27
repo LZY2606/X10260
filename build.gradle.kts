@@ -1,0 +1,33 @@
+plugins {
+    java
+    application
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+    implementation("io.javalin:javalin:6.7.0")
+    implementation("org.xerial:sqlite-jdbc:3.46.1.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
+    implementation("org.slf4j:slf4j-simple:2.0.16")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+application {
+    mainClass.set("workbench.Main")
+}
+
+tasks.test {
+    useJUnitPlatform()
+    testLogging { events("passed", "failed", "skipped") }
+}
+
+tasks.run {
+    standardInput = System.`in`()
+}
